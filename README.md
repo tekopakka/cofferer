@@ -14,7 +14,7 @@ A simple Android app to track your daily coffee intake.
 2. Start the development server: `npx expo start`
 3. Run on Android emulator or device: Press `a` in the terminal, or use Expo Go app.
 
-## Building for Android
+#[.gradle](.gradle)# Building for Android
 
 To build an APK: `npx expo build:android`
 

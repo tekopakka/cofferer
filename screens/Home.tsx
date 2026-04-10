@@ -18,10 +18,9 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Coffee Tracker</Text>
+      <Text style={styles.title}>Click to drink a coffee</Text>
       <TouchableOpacity style={styles.button} onPress={addCoffee}>
-        <Ionicons name="cafe" size={100} color="#8B4513" />
-        <Text style={styles.buttonText}>Drink Coffee</Text>
+        <Ionicons name="cafe" size={200} color="#4e3003ff" />
       </TouchableOpacity>
     </View>
   );

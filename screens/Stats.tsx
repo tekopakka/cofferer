@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { Text, StyleSheet, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BarChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
@@ -7,7 +7,7 @@ import { Dimensions } from 'react-native';
 const screenWidth = Dimensions.get('window').width;
 
 const StatsScreen = () => {
-  const [counts, setCounts] = useState({ day: 0, week: 0, month: 0, year: 0 });
+  const [counts, setCounts] = useState({ day: 0, week: 0, month: 0, year: 0, avg: "" });
   const [chartData, setChartData] = useState({ labels: [] as string[], datasets: [{ data: [] as number[] }] });
 
   useEffect(() => {
@@ -28,8 +28,9 @@ const StatsScreen = () => {
       const weekCount = coffees.filter((c: string) => new Date(c) > weekAgo).length;
       const monthCount = coffees.filter((c: string) => new Date(c) > monthAgo).length;
       const yearCount = coffees.filter((c: string) => new Date(c) > yearAgo).length;
+      const weekAvg = weekCount / 7;
 
-      setCounts({ day: dayCount, week: weekCount, month: monthCount, year: yearCount });
+      setCounts({ day: dayCount, week: weekCount, month: monthCount, year: yearCount, avg: weekAvg.toFixed(2) });
 
       // For chart, last 7 days
       const labels = [];
@@ -42,7 +43,7 @@ const StatsScreen = () => {
           const d = new Date(c);
           return d >= dayStart && d < dayEnd;
         }).length;
-        labels.push(date.toLocaleDateString('en-US', { weekday: 'short' }));
+        labels.push(date.toLocaleDateString('fi-FI', { weekday: 'short' }));
         data.push(count);
       }
       setChartData({ labels, datasets: [{ data }] });
@@ -69,7 +70,7 @@ const StatsScreen = () => {
           backgroundColor: '#F5F5DC',
           backgroundGradientFrom: '#F5F5DC',
           backgroundGradientTo: '#F5F5DC',
-          decimalPlaces: 0,
+          decimalPlaces: 2,
           color: (opacity = 1) => `rgba(139, 69, 19, ${opacity})`,
           labelColor: (opacity = 1) => `rgba(139, 69, 19, ${opacity})`,
           style: {
@@ -86,6 +87,7 @@ const StatsScreen = () => {
           borderRadius: 16,
         }}
       />
+      <Text style={styles.stat}> Average coffees a day: {(counts.avg)}</Text>
     </ScrollView>
   );
 };
