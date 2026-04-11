@@ -63,14 +63,19 @@ const StatsScreen = () => {
       <BarChart
         data={chartData}
         width={screenWidth - 40}
+        
         height={220}
         yAxisLabel=""
         yAxisSuffix=""
+        showValuesOnTopOfBars={true}
+        withHorizontalLabels={true}
+        fromZero={true}
         chartConfig={{
           backgroundColor: '#F5F5DC',
           backgroundGradientFrom: '#F5F5DC',
           backgroundGradientTo: '#F5F5DC',
-          decimalPlaces: 2,
+          decimalPlaces: 0,
+          barPercentage: 0.8,
           color: (opacity = 1) => `rgba(139, 69, 19, ${opacity})`,
           labelColor: (opacity = 1) => `rgba(139, 69, 19, ${opacity})`,
           style: {
@@ -81,10 +86,15 @@ const StatsScreen = () => {
             strokeWidth: '2',
             stroke: '#8B4513',
           },
+          propsForBackgroundLines: {
+            strokeWidth: 0,
+          },
         }}
         style={{
           marginVertical: 8,
           borderRadius: 16,
+          paddingRight: 0,
+          paddingLeft: -30,
         }}
       />
       <Text style={styles.stat}> Average coffees a day: {(counts.avg)}</Text>
