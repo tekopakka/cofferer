@@ -22,6 +22,7 @@ export default function App() {
               iconName = 'bar-chart';
             } else if (route.name === 'Logs') {
               iconName = 'list-outline';
+
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;

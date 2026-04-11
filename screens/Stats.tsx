@@ -19,7 +19,7 @@ const StatsScreen = () => {
       const existing = await AsyncStorage.getItem('coffees');
       const coffees = existing ? JSON.parse(existing) : [];
       const now = new Date();
-      const dayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+      const dayAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
       const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
       const yearAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
@@ -28,9 +28,15 @@ const StatsScreen = () => {
       const weekCount = coffees.filter((c: string) => new Date(c) > weekAgo).length;
       const monthCount = coffees.filter((c: string) => new Date(c) > monthAgo).length;
       const yearCount = coffees.filter((c: string) => new Date(c) > yearAgo).length;
-      const weekAvg = weekCount / 7;
 
-      setCounts({ day: dayCount, week: weekCount, month: monthCount, year: yearCount, avg: weekAvg.toFixed(2) });
+      const firstCoffee: Date = new Date(coffees[0]);
+      const diffInMs: number = Math.abs(now.getTime() - firstCoffee.getTime());
+      const msInDay: number = 1000 * 60 * 60 * 24;
+      const diff = Math.floor(diffInMs / msInDay);
+ 
+      const avg = weekCount / 7;
+
+      setCounts({ day: dayCount, week: weekCount, month: monthCount, year: yearCount, avg: avg.toFixed(2) });
 
       // For chart, last 7 days
       const labels = [];
@@ -63,19 +69,15 @@ const StatsScreen = () => {
       <BarChart
         data={chartData}
         width={screenWidth - 40}
-        
         height={220}
         yAxisLabel=""
         yAxisSuffix=""
         showValuesOnTopOfBars={true}
         withHorizontalLabels={true}
-        fromZero={true}
         chartConfig={{
           backgroundColor: '#F5F5DC',
           backgroundGradientFrom: '#F5F5DC',
           backgroundGradientTo: '#F5F5DC',
-          decimalPlaces: 0,
-          barPercentage: 0.8,
           color: (opacity = 1) => `rgba(139, 69, 19, ${opacity})`,
           labelColor: (opacity = 1) => `rgba(139, 69, 19, ${opacity})`,
           style: {
@@ -87,14 +89,14 @@ const StatsScreen = () => {
             stroke: '#8B4513',
           },
           propsForBackgroundLines: {
-            strokeWidth: 0,
+            strokeWidth: 1,
           },
         }}
         style={{
           marginVertical: 8,
           borderRadius: 16,
           paddingRight: 0,
-          paddingLeft: -30,
+          paddingLeft: 0,
         }}
       />
       <Text style={styles.stat}> Average coffees a day: {(counts.avg)}</Text>
